@@ -14,37 +14,37 @@ class _BridgeDiscoveryScreenState extends State<BridgeDiscoveryScreen> {
           title: Text("Bridge Discovery"),
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              height: MediaQuery.of(context).size.height * 0.7,
+              height: MediaQuery.of(context).size.height * 0.55,
               child: Center(
-                  child: Container(
-                    height: 350,
-                    width: 350,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      border: Border.all(),
-                      borderRadius: BorderRadius.circular(60)
-                    ),
-                    child: Center(
-                      child: Container(
-                        height: 150,
-                        width: 150,
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.blue, width: 5),
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                        ),
-                        child: Center(
-                          child: Text("Philips", style: TextStyle(color: Color.fromRGBO(0, 0, 0, 0.1), fontSize: 30, fontWeight: FontWeight.w900),),
-                        ),
-                      ),
-                    ),
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: 50),
+                  child: Image.asset(
+                    "assets/images/hue-bridge.png",
+                    fit: BoxFit.contain,
                   ),
                 ),
+              ),
             ),
-            RaisedButton(onPressed: () {}, child: Text("Automatic Discovery"),)
+            RaisedButton(
+              onPressed: () {},
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+              color: Theme.of(context).primaryColor,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+              child: Text("Automatic Discovery", style: TextStyle(fontWeight: FontWeight.bold),),
+            ),
+            FlatButton(
+              onPressed: () {},
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+              color: Colors.transparent,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40), side:  BorderSide(color: Theme.of(context).primaryColor, width: 3)),
+              child: Text("Enter IP Address", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+            ),
           ],
         ));
   }
+
+
 }
