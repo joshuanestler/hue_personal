@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:hue_dart/hue_dart.dart';
+import 'package:huepersonal/api/bridge.dart';
 import 'package:huepersonal/main.dart';
+import 'package:huepersonal/models/lightState.dart';
+import 'package:huepersonal/models/light.dart';
 
 class LightListItem extends StatefulWidget {
 
@@ -54,8 +56,8 @@ class _LightListItemState extends State<LightListItem> {
                 setState(() {
                   _isOn = !_isOn;
                 });
-                LightState newState = LightState((s) => s..on = _isOn);
-                await MyApp.bridge.updateLightState(widget.reference.rebuild((l) => l..state = newState.toBuilder(),));
+                //LightState newState = LightState((s) => s..on = _isOn);
+                //await MyApp.bridge.updateLightState(widget.reference.rebuild((l) => l..state = newState.toBuilder(),));
                 updateVariables();
               },
             ),

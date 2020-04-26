@@ -3,7 +3,7 @@ import 'package:huepersonal/screens/schedules/SchedulesOverviewScreen.dart';
 import 'package:huepersonal/screens/lights/lightsOverviewScreen.dart';
 import 'package:huepersonal/screens/groups/groupsOverviewScreen.dart';
 import 'package:huepersonal/screens/rules/rulesOverviewScreen.dart';
-import 'package:huepersonal/screens/sensors/sensorsOvervieScreen.dart';
+import 'package:huepersonal/screens/sensors/sensorsOverviewScreen.dart';
 
 class MainDrawer extends StatelessWidget {
   @override
