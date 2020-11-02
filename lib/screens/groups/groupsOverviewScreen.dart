@@ -40,11 +40,10 @@ class _GroupsOverviewScreenState extends State<GroupsOverviewScreen> {
     return Scaffold(
         drawer: MainDrawer(),
         appBar: AppBar(
-          title: Text("Groups"),
+          title: const Text("Groups"),
         ),
         body: _isLoading
-            ? Center(child: CircularProgressIndicator())
-            : ListView(children: groups.map((e) => GroupListItem(e)).toList())
-    );
+            ? const Center(child: CircularProgressIndicator())
+            : ListView(children: groups.map((e) => GroupListItem(e)).toList()));
   }
 }

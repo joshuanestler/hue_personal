@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hue_dart/hue_dart.dart';
 import 'package:huepersonal/main.dart';
 import 'package:huepersonal/widgets/lightListItem.dart';
-import 'package:hue_dart/hue_dart.dart';
 import 'package:huepersonal/widgets/mainDrawer.dart';
 
 class LightsOverviewScreen extends StatefulWidget {
@@ -36,13 +36,12 @@ class _LightsOverviewScreenState extends State<LightsOverviewScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MainDrawer(),
-      appBar: AppBar(
-        title: Text("Lights"),
-      ),
-      body: _isLoading
-          ? Center(child: CircularProgressIndicator())
-          : ListView(children: lights.map((e) => LightListItem(e)).toList())
-    );
+        drawer: MainDrawer(),
+        appBar: AppBar(
+          title: const Text("Lights"),
+        ),
+        body: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : ListView(children: lights.map((e) => LightListItem(e)).toList()));
   }
 }

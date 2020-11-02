@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hue_dart/hue_dart.dart';
 import 'package:huepersonal/widgets/mainDrawer.dart';
-import 'package:huepersonal/widgets/ruleListItem.dart';
+
+import 'file:///E:/Projects/Android/hue_personal/lib/widgets/rules/ruleListItem.dart';
 
 import '../../main.dart';
 
@@ -40,11 +41,13 @@ class _RulesOverviewScreenState extends State<RulesOverviewScreen> {
     return Scaffold(
         drawer: MainDrawer(),
         appBar: AppBar(
-          title: Text("Rules"),
+          title: const Text("Rules"),
+          actions: <Widget>[
+            IconButton(icon: const Icon(Icons.add), onPressed: () {})
+          ],
         ),
         body: _isLoading
-            ? Center(child: CircularProgressIndicator())
-            : ListView(children: rules.map((e) => RuleListItem(e)).toList())
-    );
+            ? const Center(child: CircularProgressIndicator())
+            : ListView(children: rules.map((e) => RuleListItem(e)).toList()));
   }
 }

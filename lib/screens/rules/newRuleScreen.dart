@@ -8,6 +8,10 @@ class NewRuleScreen extends StatefulWidget {
 class _NewRuleScreenState extends State<NewRuleScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("New Rule"),
+      ),
+    );
   }
 }

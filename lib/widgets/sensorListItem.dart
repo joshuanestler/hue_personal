@@ -16,8 +16,9 @@ class _SensorListItemState extends State<SensorListItem> {
       child: ListTile(
         title: Text(
           widget.reference.name,
-          style: Theme.of(context).textTheme.title,
+          style: Theme.of(context).textTheme.headline6,
         ),
+        subtitle: Text(widget.reference.type),
       ),
     );
   }
