@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:hue_dart/hue_dart.dart';
+import 'package:huepersonal/screens/BridgeDiscoveryScreen.dart';
 import 'package:huepersonal/screens/groups/groupsOverviewScreen.dart';
 import 'package:huepersonal/screens/lights/lightsOverviewScreen.dart';
 import 'package:huepersonal/screens/rules/rulesOverviewScreen.dart';
@@ -13,12 +14,12 @@ void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   static final Bridge bridge = Bridge(
-      Client(), "192.168.178.12", "2Tzl7Yck4YksknR9OSBFHoCE3a1t3wTXS2sQRAGS");
+      Client(), "192.168.188.12", "2Tzl7Yck4YksknR9OSBFHoCE3a1t3wTXS2sQRAGS");
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Hue Darter',
       theme: ThemeData(
           brightness: Brightness.light,
           primarySwatch: Colors.blue,
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData(
         brightness: Brightness.dark,
       ),
-      home: RulesOverviewScreen(),
+      home: LightsOverviewScreen(),
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case LightsOverviewScreen.routeName:

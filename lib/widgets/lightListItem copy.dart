@@ -45,16 +45,16 @@ class _LightListItemState extends State<LightListItem> {
                 255, 250, 240, _brightness == null ? 1 : _brightness.toDouble())
             : Colors.transparent);
     return Card(
+      color: _color,
       child: Column(
         children: <Widget>[
           ListTile(
-            leading: CircleAvatar(
-              backgroundColor: _color,
-              child: Text(_isOn ? "" : "Off"),
-            ),
             title: Text(
               widget.reference.name,
-              style: Theme.of(context).textTheme.headline6,
+              style: Theme.of(context).textTheme.headline6.apply(
+                  color: _color.computeLuminance() < 0.5
+                      ? Colors.white
+                      : Colors.black),
             ),
             subtitle: _state.reachable
                 ? const Text("")

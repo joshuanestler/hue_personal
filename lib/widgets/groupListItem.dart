@@ -23,7 +23,7 @@ class _GroupListItemState extends State<GroupListItem> {
         ),
         subtitle: Text(
             "${widget.reference.lights.length} light${widget.reference.lights.length == 1 ? "" : "s"}"),
-        trailing: Switch(value: _isOn, onChanged: (v) {}),
+        trailing: Switch.adaptive(value: _isOn, onChanged: (v) {}),
       ),
     );
   }

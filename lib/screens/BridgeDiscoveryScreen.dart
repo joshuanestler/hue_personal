@@ -32,19 +32,29 @@ class _BridgeDiscoveryScreenState extends State<BridgeDiscoveryScreen> {
               onPressed: () {},
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
               color: Theme.of(context).primaryColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
-              child: Text("Automatic Discovery", style: TextStyle(fontWeight: FontWeight.bold),),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40)),
+              child: Text(
+                "Automatic Discovery",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
             ),
             FlatButton(
               onPressed: () {},
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
               color: Colors.transparent,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40), side:  BorderSide(color: Theme.of(context).primaryColor, width: 3)),
-              child: Text("Enter IP Address", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(40),
+                  side: BorderSide(
+                      color: Theme.of(context).primaryColor, width: 1.5)),
+              child: Text(
+                "Enter IP Address",
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).textTheme.bodyText1.color),
+              ),
             ),
           ],
         ));
   }
-
-
 }

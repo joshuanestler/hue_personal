@@ -1,0 +1,10 @@
+{
+  "bridge_discovery": {
+    "automatic_search": "Automatic Search",
+    "heading": "Add Hue-Bridge",
+    "search_ip": "Enter IP adress"
+  },
+  "BridgeDiscovery": {
+    "automaticSearch": "Automatic Search"
+  }
+}

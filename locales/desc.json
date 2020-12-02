@@ -1,0 +1,10 @@
+{
+  "bridge_discovery": {
+    "automatic_search": "Automatic Search",
+    "heading": "The Scaffold Heading of the BridgeDiscoveryScreen",
+    "search_ip": "Search by IP"
+  },
+  "BridgeDiscovery": {
+    "automaticSearch": "Automatic Search"
+  }
+}
