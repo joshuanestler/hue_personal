@@ -10,20 +10,21 @@ class GroupListItem extends StatefulWidget {
 }
 
 class _GroupListItemState extends State<GroupListItem> {
-  bool _isOn = false;
+  bool? _isOn = false;
 
   @override
   Widget build(BuildContext context) {
-    _isOn = widget.reference.state.anyOn;
+    _isOn = widget.reference.state!.anyOn;
+    print(widget.reference.name);
     return Card(
       child: ListTile(
         title: Text(
-          widget.reference.name,
+          widget.reference.name!,
           style: Theme.of(context).textTheme.bodyText1,
         ),
         subtitle: Text(
-            "${widget.reference.lights.length} light${widget.reference.lights.length == 1 ? "" : "s"}"),
-        trailing: Switch.adaptive(value: _isOn, onChanged: (v) {}),
+            "${widget.reference.lightIds!.length} light${widget.reference.lightIds!.length == 1 ? "" : "s"}"),
+        trailing: Switch.adaptive(value: _isOn!, onChanged: (v) {}),
       ),
     );
   }

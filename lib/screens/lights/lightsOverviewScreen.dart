@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hue_dart/hue_dart.dart';
-import 'package:huepersonal/main.dart';
-import 'package:huepersonal/widgets/lightListItem.dart';
-import 'package:huepersonal/widgets/mainDrawer.dart';
+import 'package:hue_personal/main.dart';
+import 'package:hue_personal/widgets/lightListItem.dart';
+import 'package:hue_personal/widgets/mainDrawer.dart';
 
 class LightsOverviewScreen extends StatefulWidget {
   static const String routeName = "/lights";
@@ -12,7 +12,7 @@ class LightsOverviewScreen extends StatefulWidget {
 }
 
 class _LightsOverviewScreenState extends State<LightsOverviewScreen> {
-  List<Light> lights;
+  late List<Light> lights;
   bool _isInit = true;
   bool _isLoading = true;
 
@@ -42,6 +42,8 @@ class _LightsOverviewScreenState extends State<LightsOverviewScreen> {
         ),
         body: _isLoading
             ? const Center(child: CircularProgressIndicator())
-            : ListView(children: lights.map((e) => LightListItem(e)).toList()));
+            : ListView(children: lights.map((e) => LightListItem(e)).toList(), 
+        padding: EdgeInsets.all(5),)
+    );
   }
 }

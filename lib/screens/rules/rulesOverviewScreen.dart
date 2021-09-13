@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hue_dart/hue_dart.dart';
-import 'package:huepersonal/widgets/mainDrawer.dart';
+import 'package:hue_personal/widgets/mainDrawer.dart';
 
-import 'file:///E:/Projects/Android/hue_personal/lib/widgets/rules/ruleListItem.dart';
+import 'package:hue_personal/widgets/rules/ruleListItem.dart';
 
 import '../../main.dart';
 
@@ -14,7 +14,7 @@ class RulesOverviewScreen extends StatefulWidget {
 }
 
 class _RulesOverviewScreenState extends State<RulesOverviewScreen> {
-  List<Rule> rules;
+  late List<Rule> rules;
   bool _isInit = true;
   bool _isLoading = true;
 

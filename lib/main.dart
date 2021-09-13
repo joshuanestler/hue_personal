@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:hue_dart/hue_dart.dart';
-import 'package:huepersonal/screens/BridgeDiscoveryScreen.dart';
-import 'package:huepersonal/screens/groups/groupsOverviewScreen.dart';
-import 'package:huepersonal/screens/lights/lightsOverviewScreen.dart';
-import 'package:huepersonal/screens/rules/rulesOverviewScreen.dart';
-import 'package:huepersonal/screens/rules/singleRuleOverviewScreen.dart';
-import 'package:huepersonal/screens/scenes/scenesOverviewScreen.dart';
-import 'package:huepersonal/screens/schedules/SchedulesOverviewScreen.dart';
-import 'package:huepersonal/screens/sensors/sensorsOvervieScreen.dart';
+import 'package:hue_personal/screens/BridgeDiscoveryScreen.dart';
+import 'package:hue_personal/screens/groups/groupsOverviewScreen.dart';
+import 'package:hue_personal/screens/lights/lightsOverviewScreen.dart';
+import 'package:hue_personal/screens/rules/rulesOverviewScreen.dart';
+import 'package:hue_personal/screens/rules/singleRuleOverviewScreen.dart';
+import 'package:hue_personal/screens/scenes/scenesOverviewScreen.dart';
+import 'package:hue_personal/screens/schedules/schedulesOverviewScreen.dart';
+import 'package:hue_personal/screens/sensors/sensorsOverviewScreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -26,6 +26,7 @@ class MyApp extends StatelessWidget {
           hintColor: Colors.grey),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
+        primarySwatch: Colors.blue,
       ),
       home: LightsOverviewScreen(),
       onGenerateRoute: (settings) {
@@ -42,9 +43,11 @@ class MyApp extends StatelessWidget {
             return MaterialPageRoute(builder: (_) => ScenesOverviewScreen());
           case SensorsOverviewScreen.routeName:
             return MaterialPageRoute(builder: (_) => SensorsOverviewScreen());
+          case BridgeDiscoveryScreen.routeName:
+            return MaterialPageRoute(builder: (_) => BridgeDiscoveryScreen());
           case SingleRuleOverviewScreen.routeName:
             return MaterialPageRoute(
-                builder: (_) => SingleRuleOverviewScreen(settings.arguments));
+                builder: (_) => SingleRuleOverviewScreen(settings.arguments as int?));
           default:
             throw Error();
         }

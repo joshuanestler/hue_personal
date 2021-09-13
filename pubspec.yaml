@@ -1,4 +1,4 @@
-name: huepersonal
+name: hue_personal
 description: A new Flutter application.
 
 # The following defines the version and build number for your application.
@@ -12,9 +12,10 @@ description: A new Flutter application.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 version: 1.0.0+1
+publish_to: none
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -22,25 +23,23 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
-  #http: ^0.12.0+4
-  http: ^0.11.2+16
-  provider: ^4.0.5
-  #hue_dart: ^0.2.1
-  hue_dart: ^0.1.2
-
+  cupertino_icons: ^1.0.3
+  http: ^0.13.3
+  provider: ^6.0.0
+  built_value: ^8.1.2
+  hue_dart:
+    git: https://github.com/Nekanu/hue_dart
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_lints: ^1.0.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -50,13 +49,10 @@ flutter:
   assets:
     - assets/images/hue-bridge.png
   #   - images/a_dot_ham.jpeg
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

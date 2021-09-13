@@ -43,7 +43,7 @@ class _SensorsOverviewScreenState extends State<SensorsOverviewScreen> {
         ),
         body: _isLoading
             ? Center(child: CircularProgressIndicator())
-            : ListView(
-                children: sensors.map((e) => SensorListItem(e)).toList()));
+            : ListView(children: sensors.map((e) => SensorListItem(e)).toList())
+    );
   }
 }

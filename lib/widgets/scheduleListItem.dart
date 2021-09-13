@@ -10,7 +10,7 @@ class ScheduleListItem extends StatefulWidget {
 }
 
 class _ScheduleListItemState extends State<ScheduleListItem> {
-  bool _isActive;
+  late bool _isActive;
 
   @override
   void initState() {
@@ -23,10 +23,10 @@ class _ScheduleListItemState extends State<ScheduleListItem> {
     return Card(
       child: ListTile(
         title: Text(
-          widget.reference.name,
+          widget.reference.name!,
           style: Theme.of(context).textTheme.headline6,
         ),
-        subtitle: Text(widget.reference.description),
+        subtitle: Text(widget.reference.description!),
         trailing: Switch(value: _isActive, onChanged: (v) {}),
       ),
     );

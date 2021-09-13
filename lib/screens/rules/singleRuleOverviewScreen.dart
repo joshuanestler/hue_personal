@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hue_dart/hue_dart.dart';
-import 'package:huepersonal/main.dart';
-import 'package:huepersonal/widgets/rules/ruleActionOverviewItem.dart';
-import 'package:huepersonal/widgets/rules/ruleConditionOverviewItem.dart';
+import 'package:hue_personal/main.dart';
+import 'package:hue_personal/widgets/rules/ruleActionOverviewItem.dart';
+import 'package:hue_personal/widgets/rules/ruleConditionOverviewItem.dart';
 
 class SingleRuleOverviewScreen extends StatefulWidget {
   static const String routeName = "/singleRuleOverview";
 
-  final int _id;
+  final int? _id;
   SingleRuleOverviewScreen(this._id);
 
   @override
@@ -16,12 +16,12 @@ class SingleRuleOverviewScreen extends StatefulWidget {
 }
 
 class _SingleRuleOverviewScreenState extends State<SingleRuleOverviewScreen> {
-  Rule _rule;
+  late Rule _rule;
   bool _isLoading = true;
 
   @override
   void didChangeDependencies() async {
-    await MyApp.bridge.rule(widget._id).then((r) {
+    await MyApp.bridge.rule(widget._id!).then((r) {
       setState(() {
         _rule = r;
         _isLoading = false;
@@ -36,7 +36,7 @@ class _SingleRuleOverviewScreenState extends State<SingleRuleOverviewScreen> {
         ? const Center(child: CircularProgressIndicator())
         : Scaffold(
             appBar: AppBar(
-              title: Text(_rule.name),
+              title: Text(_rule.name!),
             ),
             body: SingleChildScrollView(
               child: Column(
@@ -87,7 +87,7 @@ class _SingleRuleOverviewScreenState extends State<SingleRuleOverviewScreen> {
                   Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Column(
-                      children: _rule.conditions
+                      children: _rule.conditions!
                           .map((e) => RuleConditionOverviewItem(e))
                           .toList(),
                     ),
@@ -104,7 +104,7 @@ class _SingleRuleOverviewScreenState extends State<SingleRuleOverviewScreen> {
                   Padding(
                     padding: const EdgeInsets.all(5.0),
                     child: Column(
-                      children: _rule.actions
+                      children: _rule.actions!
                           .map((e) => RuleActionOverviewItem(e))
                           .toList(),
                     ),

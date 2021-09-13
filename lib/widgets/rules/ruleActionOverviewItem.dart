@@ -1,3 +1,4 @@
+import 'package:built_value/json_object.dart';
 import 'package:flutter/material.dart';
 import 'package:hue_dart/hue_dart.dart';
 
@@ -11,16 +12,16 @@ class RuleActionOverviewItem extends StatefulWidget {
 }
 
 class _RuleActionOverviewItemState extends State<RuleActionOverviewItem> {
-  String _address, _method;
-  Map<String, dynamic> _body;
+  String? _address, _method;
+  Map<String, JsonObject>? _body;
   bool _isLoading = true;
-  String _title, _subtitle;
+  String? _title, _subtitle;
 
   @override
   void initState() {
     _address = widget.reference.address;
     _method = widget.reference.method;
-    _body = widget.reference.body;
+    _body = widget.reference.body!.asMap();
     super.initState();
   }
 
@@ -40,8 +41,8 @@ class _RuleActionOverviewItemState extends State<RuleActionOverviewItem> {
         ? const CircularProgressIndicator()
         : Card(
             child: ListTile(
-              title: Text(_title),
-              subtitle: Text(_subtitle),
+              title: Text(_title!),
+              subtitle: Text(_subtitle!),
               trailing: IconButton(
                   icon: Icon(
                     Icons.delete,

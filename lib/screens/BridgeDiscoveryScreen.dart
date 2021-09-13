@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BridgeDiscoveryScreen extends StatefulWidget {
+  static const String routeName = "/bridge-discovery";
+
   @override
   _BridgeDiscoveryScreenState createState() => _BridgeDiscoveryScreenState();
 }
@@ -28,30 +30,32 @@ class _BridgeDiscoveryScreenState extends State<BridgeDiscoveryScreen> {
                 ),
               ),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {},
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
-              color: Theme.of(context).primaryColor,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40)),
+              style: ElevatedButton.styleFrom(
+                elevation: 5,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40)),
+              ),
               child: Text(
                 "Automatic Discovery",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            FlatButton(
+            OutlinedButton(
               onPressed: () {},
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
-              color: Colors.transparent,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(40),
-                  side: BorderSide(
-                      color: Theme.of(context).primaryColor, width: 1.5)),
+              style: OutlinedButton.styleFrom(
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
+                  primary: Colors.transparent,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(40))),
               child: Text(
                 "Enter IP Address",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Theme.of(context).textTheme.bodyText1.color),
+                    color: Theme.of(context).textTheme.bodyText1!.color),
               ),
             ),
           ],

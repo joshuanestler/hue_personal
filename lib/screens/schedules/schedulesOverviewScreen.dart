@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hue_dart/hue_dart.dart';
-import 'package:huepersonal/widgets/mainDrawer.dart';
-import 'package:huepersonal/widgets/scheduleListItem.dart';
+import 'package:hue_personal/widgets/mainDrawer.dart';
+import 'package:hue_personal/widgets/scheduleListItem.dart';
 
 import '../../main.dart';
 
@@ -13,7 +13,7 @@ class SchedulesOverviewScreen extends StatefulWidget {
 }
 
 class _SchedulesOverviewScreenState extends State<SchedulesOverviewScreen> {
-  List<Schedule> schedules;
+  late List<Schedule> schedules;
   bool _isInit = true;
   bool _isLoading = true;
 

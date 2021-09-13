@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hue_dart/hue_dart.dart';
-import 'package:huepersonal/widgets/groupListItem.dart';
-import 'package:huepersonal/widgets/mainDrawer.dart';
+import 'package:hue_personal/widgets/groupListItem.dart';
+import 'package:hue_personal/widgets/mainDrawer.dart';
 
 import '../../main.dart';
 
@@ -13,7 +13,7 @@ class GroupsOverviewScreen extends StatefulWidget {
 }
 
 class _GroupsOverviewScreenState extends State<GroupsOverviewScreen> {
-  List<Group> groups;
+  late List<Group> groups;
   bool _isInit = true;
   bool _isLoading = true;
 

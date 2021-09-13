@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hue_dart/hue_dart.dart';
-import 'package:huepersonal/screens/rules/singleRuleOverviewScreen.dart';
+import 'package:hue_personal/screens/rules/singleRuleOverviewScreen.dart';
 
 class RuleListItem extends StatefulWidget {
   final Rule reference;
@@ -11,15 +11,15 @@ class RuleListItem extends StatefulWidget {
 }
 
 class _RuleListItemState extends State<RuleListItem> {
-  String _status;
-  List<Condition> _conditions;
-  List<RuleAction> _actions;
+  String? _status;
+  late List<Condition> _conditions;
+  late List<RuleAction> _actions;
 
   @override
   void initState() {
     _status = widget.reference.status;
-    _conditions = widget.reference.conditions.toList();
-    _actions = widget.reference.actions.toList();
+    _conditions = widget.reference.conditions!.toList();
+    _actions = widget.reference.actions!.toList();
     super.initState();
   }
 
@@ -28,7 +28,7 @@ class _RuleListItemState extends State<RuleListItem> {
     return Card(
       child: ListTile(
         title: Text(
-          widget.reference.name,
+          widget.reference.name!,
           style: Theme.of(context).textTheme.headline6,
         ),
         subtitle: Text(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hue_dart/hue_dart.dart';
-import 'package:huepersonal/main.dart';
+import 'package:hue_personal/main.dart';
 
 class RuleConditionOverviewItem extends StatefulWidget {
   final Condition reference;
@@ -13,9 +13,9 @@ class RuleConditionOverviewItem extends StatefulWidget {
 }
 
 class _RuleConditionOverviewItemState extends State<RuleConditionOverviewItem> {
-  String _address, _operator, _value;
+  String? _address, _operator, _value;
   bool _isLoading = true;
-  String _title, _subtitle;
+  String? _title, _subtitle;
 
   @override
   void initState() {
@@ -27,7 +27,7 @@ class _RuleConditionOverviewItemState extends State<RuleConditionOverviewItem> {
 
   @override
   void didChangeDependencies() async {
-    if (_address.startsWith("/sensors")) _sensorCondition();
+    if (_address!.startsWith("/sensors")) _sensorCondition();
     super.didChangeDependencies();
   }
 
@@ -37,8 +37,8 @@ class _RuleConditionOverviewItemState extends State<RuleConditionOverviewItem> {
         ? const CircularProgressIndicator()
         : Card(
             child: ListTile(
-              title: Text(_title),
-              subtitle: Text(_subtitle),
+              title: Text(_title!),
+              subtitle: Text(_subtitle!),
               trailing: IconButton(
                   icon: Icon(
                     Icons.delete,
@@ -50,21 +50,21 @@ class _RuleConditionOverviewItemState extends State<RuleConditionOverviewItem> {
   }
 
   void _sensorCondition() async {
-    String id = _address.replaceAll(RegExp("[^0-9]"), "");
+    String id = _address!.replaceAll(RegExp("[^0-9]"), "");
     await MyApp.bridge.sensor(id).then((v) {
       setState(() {
         _title = _address;
         _subtitle = "$_operator - $_value";
         _isLoading = false;
       });
-      if (_address.endsWith("buttonevent") && _operator == "eq") {
+      if (_address!.endsWith("buttonevent") && _operator == "eq") {
         setState(() {
           _title = v.name;
           _subtitle = buttonPress(v);
           _updatedStrings();
         });
       }
-      if (_address.endsWith("lastupdated") &&
+      if (_address!.endsWith("lastupdated") &&
           (_operator == "dx" || _operator == "ddx")) {
         setState(() {
           _title = v.name;
@@ -77,8 +77,8 @@ class _RuleConditionOverviewItemState extends State<RuleConditionOverviewItem> {
 
   String buttonPress(Sensor s) {
     if (s.type == "ZLLSwitch") {
-      String buttonNumber = "Button ${int.parse(_value[0])}";
-      switch (_value[3]) {
+      String buttonNumber = "Button ${int.parse(_value![0])}";
+      switch (_value![3]) {
         case "0":
           return "$buttonNumber - Initial Touch";
         case "1":

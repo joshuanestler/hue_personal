@@ -15,10 +15,10 @@ class _SensorListItemState extends State<SensorListItem> {
     return Card(
       child: ListTile(
         title: Text(
-          widget.reference.name,
+          widget.reference.name!,
           style: Theme.of(context).textTheme.headline6,
         ),
-        subtitle: Text(widget.reference.type),
+        subtitle: Text(widget.reference.type!),
       ),
     );
   }

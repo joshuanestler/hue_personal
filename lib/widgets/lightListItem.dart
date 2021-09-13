@@ -1,8 +1,9 @@
+import 'package:built_value/built_value.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hue_dart/hue_dart.dart';
-import 'package:huepersonal/main.dart';
+import 'package:hue_personal/main.dart';
 
 class LightListItem extends StatefulWidget {
   final Light reference;
@@ -13,18 +14,16 @@ class LightListItem extends StatefulWidget {
 }
 
 class _LightListItemState extends State<LightListItem> {
-  LightType _type;
-  LightState _state;
-  Color _color;
-  int _brightness;
-  bool _isOn;
+  LightType _type = LightType.OnOff;
+  LightState? _state;
+  Color _color = Colors.transparent;
+  late bool _brightnessModifiable;
+  Group? _group;
 
   @override
   void initState() {
     _state = widget.reference.state;
     _type = setType(widget.reference);
-    _isOn = _state.on;
-    _brightness = _state.brightness;
     super.initState();
   }
 
@@ -34,95 +33,162 @@ class _LightListItemState extends State<LightListItem> {
     super.didChangeDependencies();
   }
 
+  /// Darkens the color by given percentage (0...1)
+  Color darken(Color color, double percentage) {
+    int red = (color.red * (1 - percentage)).toInt();
+    int green = (color.green * (1 - percentage)).toInt();
+    int blue = (color.blue * (1 - percentage)).toInt();
+
+    red = red > color.red ? 0 : red;
+    green = green > color.green ? 0 : green;
+    blue = blue > color.blue ? 0 : blue;
+
+    return Color.fromRGBO(red, green, blue, color.opacity);
+  }
+
+  Color lighten(Color color, double percentage) {
+    int red = (color.red * (1 + percentage)).toInt();
+    int green = (color.green * (1 + percentage)).toInt();
+    int blue = (color.blue * (1 + percentage)).toInt();
+
+    red = red > 0xFF ? 0xFF : red;
+    green = green > 0xFF ? 0xFF : green;
+    blue = blue > 0xFF ? 0xFF : blue;
+
+    return Color.fromRGBO(red, green, blue, color.opacity);
+  }
+
   @override
   Widget build(BuildContext context) {
-    _color = _isOn && _type == LightType.ColorLight
-        ? HSVColor.fromAHSV(1, (_state.hue.toDouble() / 65535) * 360,
-                _state.saturation.toDouble() / 255, 1)
-            .toColor()
-        : (_type != LightType.ColorLight && _state.on
-            ? Color.fromRGBO(
-                255, 250, 240, _brightness == null ? 1 : _brightness.toDouble())
-            : Colors.transparent);
+    calculateColor();
+    Color darkColor = darken(_color, 0.15);
+    Color lightColor = lighten(_color, 0.15);
+    Color? frontColor = lightColor.computeLuminance() > 0.5
+        ? Colors.black
+        : _color.alpha == 0
+            ? Theme.of(context).textTheme.headline6!.color
+            : Colors.white;
     return Card(
-      child: Column(
-        children: <Widget>[
-          ListTile(
-            leading: CircleAvatar(
-              backgroundColor: _color,
-              child: Text(_isOn ? "" : "Off"),
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            gradient: LinearGradient(
+                begin: Alignment(-0.85, -0.9),
+                end: Alignment(1.0, 0.85),
+                colors: <Color>[lighten(_color, 0.2), darken(_color, 0.2)])),
+        child: Column(
+          children: <Widget>[
+            ListTile(
+              leading: CircleAvatar(
+                child: Icon(Icons.lightbulb_outline),
+              ),
+              title: Text(
+                widget.reference.name!,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6
+                    ?.apply(color: frontColor),
+              ),
+              subtitle: Row(
+                children: [
+                  Text("Room"),
+                  Container(width: 20),
+                  _state!.reachable!
+                      ? const Text("")
+                      : Text(
+                          "Unreachable",
+                          style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                              color: Theme.of(context).errorColor),
+                        )
+                ],
+              ),
+              trailing: Switch.adaptive(
+                value: _state!.on!,
+                onChanged: !_state!.reachable! ? null : toggleOnOff,
+              ),
             ),
-            title: Text(
-              widget.reference.name,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            subtitle: _state.reachable
-                ? const Text("")
-                : Text(
-                    "Unreachable",
-                    style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        color: Theme.of(context).errorColor),
-                  ),
-            trailing: Switch.adaptive(
-              value: _isOn,
-              onChanged: !_state.reachable
-                  ? null
-                  : (v) async {
-                      setState(() {
-                        _isOn = !_isOn;
-                      });
-                      await MyApp.bridge.updateLightState(widget.reference);
-                    },
-            ),
-          ),
-          _type != LightType.OnOff && _isOn
-              ? Container(
-                  height: 20,
-                  child: SliderTheme(
-                    data: SliderTheme.of(context).copyWith(
-                      trackShape: CustomTrackShape(),
-                      activeTrackColor: Colors.white,
-                      trackHeight: 10,
+            _type == LightType.OnOff
+                ? Container(height: 1)
+                : Container(
+                    height: 10,
+                    margin: EdgeInsets.only(
+                        top: 0, bottom: 10, left: 15, right: 15),
+                    child: SliderTheme(
+                      data: SliderTheme.of(context).copyWith(
+                        trackShape: RoundedRectSliderTrackShape(),
+                        activeTrackColor: Colors.white,
+                        thumbShape: RoundSliderThumbShape(
+                            enabledThumbRadius: _brightnessModifiable ? 10 : 6),
+                        trackHeight: 10,
+                        thumbColor: Colors.white,
+                      ),
+                      child: Slider.adaptive(
+                        value: _type != LightType.OnOff
+                            ? _state!.brightness!.toDouble()
+                            : 1,
+                        min: 1,
+                        max: 254,
+                        onChanged:
+                            _brightnessModifiable ? changeBrightness : null,
+                      ),
                     ),
-                    child: Slider.adaptive(
-                      value: _brightness.toDouble(),
-                      min: 0,
-                      max: 255,
-                      onChanged: (d) async {
-                        setState(() {
-                          _brightness = d.floor();
-                        });
-                        await MyApp.bridge.updateLightState(widget.reference);
-                      },
-                    ),
-                  ),
-                )
-              : Container(height: 20)
-        ],
+                  )
+          ],
+        ),
       ),
     );
   }
 
+  void calculateColor() {
+    _color = _state!.on! && _type == LightType.ColorLight
+        ? HSVColor.fromAHSV(1, (_state!.hue!.toDouble() / 65535) * 360,
+                _state!.saturation!.toDouble() / 255, 1)
+            .toColor()
+        : (_type != LightType.ColorLight && _state!.on!
+            ? Color.fromRGBO(255, 250, 240,
+                _state!.brightness == null ? 1 : _state!.brightness!.toDouble())
+            : Colors.transparent);
+  }
+
+  void changeBrightness(double value) async {
+    final LightState newState = _state!.rebuild(
+      (s) => s
+        ..on = true
+        ..brightness = value.floor(),
+    );
+    await updateLightState(newState);
+  }
+
+  void toggleOnOff(bool value) async {
+    final LightState newState = _state!.rebuild((s) => s..on = value);
+    await updateLightState(newState);
+  }
+
   void updateVariables() async {
-    await MyApp.bridge.light(widget.reference.id).then((v) {
+    await MyApp.bridge.light(widget.reference.id!).then((v) {
       setState(() {
         _state = v.state;
         _type = setType(v);
-        _isOn = _state.on;
-        _color = _isOn && _type == LightType.ColorLight
-            ? HSVColor.fromAHSV(1, (_state.hue.toDouble() / 65535) * 360,
-                    _state.saturation.toDouble() / 255, 1)
-                .toColor()
-            : (_type == LightType.OnOff && _state.on
-                ? Colors.white70
-                : Colors.transparent);
+        _brightnessModifiable =
+            _state!.on! && _type != LightType.OnOff && _state!.reachable!;
+        calculateColor();
       });
     });
+    _group = await MyApp.bridge.groups().then((value) =>
+        value.firstWhere((g) => g.lightIds!.contains(widget.reference.id)));
+  }
+
+  Future<void> updateLightState(LightState newState) async {
+    await MyApp.bridge.updateLightState(widget.reference.rebuild(
+      (l) => l..state = newState.toBuilder(),
+    ));
   }
 
   static LightType setType(Light ref) {
-    LightState state = ref.state;
+    LightState state = ref.state!;
     if (state.brightness != null) {
       if (state.hue != null) return LightType.ColorLight;
       return LightType.Dimmable;
@@ -133,13 +199,13 @@ class _LightListItemState extends State<LightListItem> {
 
 class CustomTrackShape extends RectangularSliderTrackShape {
   Rect getPreferredRect({
-    @required RenderBox parentBox,
+    required RenderBox parentBox,
     Offset offset = Offset.zero,
-    @required SliderThemeData sliderTheme,
+    required SliderThemeData sliderTheme,
     bool isEnabled = false,
     bool isDiscrete = false,
   }) {
-    final double trackHeight = sliderTheme.trackHeight;
+    final double trackHeight = sliderTheme.trackHeight!;
     final double trackLeft = offset.dx;
     final double trackTop = offset.dy + (parentBox.size.height - trackHeight);
     final double trackWidth = parentBox.size.width;

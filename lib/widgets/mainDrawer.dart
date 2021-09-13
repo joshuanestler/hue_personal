@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:huepersonal/main.dart';
-import 'package:huepersonal/screens/groups/groupsOverviewScreen.dart';
-import 'package:huepersonal/screens/lights/lightsOverviewScreen.dart';
-import 'package:huepersonal/screens/rules/rulesOverviewScreen.dart';
-import 'package:huepersonal/screens/scenes/scenesOverviewScreen.dart';
-import 'package:huepersonal/screens/schedules/SchedulesOverviewScreen.dart';
-import 'package:huepersonal/screens/sensors/sensorsOvervieScreen.dart';
+import 'package:hue_personal/main.dart';
+import 'package:hue_personal/screens/BridgeDiscoveryScreen.dart';
+import 'package:hue_personal/screens/groups/groupsOverviewScreen.dart';
+import 'package:hue_personal/screens/lights/lightsOverviewScreen.dart';
+import 'package:hue_personal/screens/rules/rulesOverviewScreen.dart';
+import 'package:hue_personal/screens/scenes/scenesOverviewScreen.dart';
+import 'package:hue_personal/screens/schedules/schedulesOverviewScreen.dart';
+import 'package:hue_personal/screens/sensors/sensorsOverviewScreen.dart';
 
 class MainDrawer extends StatefulWidget {
   @override
@@ -13,8 +14,8 @@ class MainDrawer extends StatefulWidget {
 }
 
 class _MainDrawerState extends State<MainDrawer> {
-  String _name;
-  String _ip;
+  String? _name;
+  String? _ip;
   bool _isLoading = true;
 
   @override
@@ -40,8 +41,8 @@ class _MainDrawerState extends State<MainDrawer> {
           : ListView(
               children: <Widget>[
                 UserAccountsDrawerHeader(
-                  accountName: Text(_name),
-                  accountEmail: Text("$_ip"),
+                  accountName: Text('$_name'),
+                  accountEmail: Text('$_ip'),
                   currentAccountPicture:
                       Image.asset("assets/images/hue-bridge.png"),
                 ),
@@ -51,7 +52,7 @@ class _MainDrawerState extends State<MainDrawer> {
                       context, LightsOverviewScreen.routeName),
                 ),
                 ListTile(
-                  title: const Text("Rooms"),
+                  title: const Text("Groups"),
                   onTap: () => Navigator.pushReplacementNamed(
                       context, GroupsOverviewScreen.routeName),
                 ),
@@ -74,6 +75,11 @@ class _MainDrawerState extends State<MainDrawer> {
                   title: const Text("Sensors"),
                   onTap: () => Navigator.pushReplacementNamed(
                       context, SensorsOverviewScreen.routeName),
+                ),
+                ListTile(
+                  title: const Text("Bridge Discovery"),
+                  onTap: () => Navigator.pushNamed(
+                      context, BridgeDiscoveryScreen.routeName),
                 ),
               ],
             ),
