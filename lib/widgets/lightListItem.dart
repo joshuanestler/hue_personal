@@ -1,6 +1,4 @@
-import 'package:built_value/built_value.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hue_dart/hue_dart.dart';
 import 'package:hue_personal/main.dart';
@@ -16,14 +14,12 @@ class LightListItem extends StatefulWidget {
 class _LightListItemState extends State<LightListItem> {
   LightType _type = LightType.OnOff;
   LightState? _state;
-  Color _color = Colors.transparent;
-  late bool _brightnessModifiable;
   Group? _group;
 
   @override
   void initState() {
     _state = widget.reference.state;
-    _type = setType(widget.reference);
+    _type = getType(widget.reference);
     super.initState();
   }
 
@@ -60,14 +56,17 @@ class _LightListItemState extends State<LightListItem> {
 
   @override
   Widget build(BuildContext context) {
-    calculateColor();
-    Color darkColor = darken(_color, 0.15);
-    Color lightColor = lighten(_color, 0.15);
+    Color color = calculateColor();
+    Color darkColor = darken(color, 0.15);
+    Color lightColor = lighten(color, 0.15);
     Color? frontColor = lightColor.computeLuminance() > 0.5
         ? Colors.black
-        : _color.alpha == 0
+        : color.alpha == 0
             ? Theme.of(context).textTheme.headline6!.color
             : Colors.white;
+    bool brightnessModifiable =
+        _state!.on! && _type != LightType.OnOff && _state!.reachable!;
+
     return Card(
       elevation: 5,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
@@ -77,7 +76,7 @@ class _LightListItemState extends State<LightListItem> {
             gradient: LinearGradient(
                 begin: Alignment(-0.85, -0.9),
                 end: Alignment(1.0, 0.85),
-                colors: <Color>[lighten(_color, 0.2), darken(_color, 0.2)])),
+                colors: <Color>[lightColor, darkColor])),
         child: Column(
           children: <Widget>[
             ListTile(
@@ -118,10 +117,9 @@ class _LightListItemState extends State<LightListItem> {
                         top: 0, bottom: 10, left: 15, right: 15),
                     child: SliderTheme(
                       data: SliderTheme.of(context).copyWith(
-                        trackShape: RoundedRectSliderTrackShape(),
                         activeTrackColor: Colors.white,
                         thumbShape: RoundSliderThumbShape(
-                            enabledThumbRadius: _brightnessModifiable ? 10 : 6),
+                            enabledThumbRadius: brightnessModifiable ? 10 : 6),
                         trackHeight: 10,
                         thumbColor: Colors.white,
                       ),
@@ -132,7 +130,7 @@ class _LightListItemState extends State<LightListItem> {
                         min: 1,
                         max: 254,
                         onChanged:
-                            _brightnessModifiable ? changeBrightness : null,
+                            brightnessModifiable ? changeBrightness : null,
                       ),
                     ),
                   )
@@ -142,8 +140,12 @@ class _LightListItemState extends State<LightListItem> {
     );
   }
 
-  void calculateColor() {
-    _color = _state!.on! && _type == LightType.ColorLight
+  Color calculateColor() {
+    Color col = Color.fromRGBO(255, 250, 240, 1);
+
+    if (_type == LightType.ColorLight) {}
+
+    return _state!.on! && _type == LightType.ColorLight
         ? HSVColor.fromAHSV(1, (_state!.hue!.toDouble() / 65535) * 360,
                 _state!.saturation!.toDouble() / 255, 1)
             .toColor()
@@ -171,10 +173,7 @@ class _LightListItemState extends State<LightListItem> {
     await MyApp.bridge.light(widget.reference.id!).then((v) {
       setState(() {
         _state = v.state;
-        _type = setType(v);
-        _brightnessModifiable =
-            _state!.on! && _type != LightType.OnOff && _state!.reachable!;
-        calculateColor();
+        _type = getType(v);
       });
     });
     _group = await MyApp.bridge.groups().then((value) =>
@@ -187,29 +186,13 @@ class _LightListItemState extends State<LightListItem> {
     ));
   }
 
-  static LightType setType(Light ref) {
+  static LightType getType(Light ref) {
     LightState state = ref.state!;
     if (state.brightness != null) {
       if (state.hue != null) return LightType.ColorLight;
       return LightType.Dimmable;
     }
     return LightType.OnOff;
-  }
-}
-
-class CustomTrackShape extends RectangularSliderTrackShape {
-  Rect getPreferredRect({
-    required RenderBox parentBox,
-    Offset offset = Offset.zero,
-    required SliderThemeData sliderTheme,
-    bool isEnabled = false,
-    bool isDiscrete = false,
-  }) {
-    final double trackHeight = sliderTheme.trackHeight!;
-    final double trackLeft = offset.dx;
-    final double trackTop = offset.dy + (parentBox.size.height - trackHeight);
-    final double trackWidth = parentBox.size.width;
-    return Rect.fromLTWH(trackLeft, trackTop, trackWidth, trackHeight);
   }
 }
 

@@ -32,7 +32,7 @@ class _RuleListItemState extends State<RuleListItem> {
           style: Theme.of(context).textTheme.headline6,
         ),
         subtitle: Text(
-            "${_conditions.length} Condition${_conditions.length == 1 ? "" : "s"} - ${_actions.length} Action${_actions.length == 1 ? "" : "s"}"),
+            "${_conditions.length} ${_conditions.length == 1 ? "Condition" : "Conditions"} - ${_actions.length} ${_actions.length == 1 ? "Action" : "Actions"}"),
         trailing: Container(
           width: 100,
           child: Row(
